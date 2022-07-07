@@ -1,4 +1,5 @@
 #include"MC.h"
+#include <algorithm>
 #include <cmath>
 using namespace std;
 double MC::MC_simulation() {
@@ -6,15 +7,13 @@ double MC::MC_simulation() {
 	cin >> times;
 	double sum = 0;
 	for (int i = 0; i != times; ++i) {
-		sum += s.Solve_Euler();
+		if (optType == 'C')
+			sum += max(s.Solve_Euler()-K,0.0);
+		else
+			sum += max(K - s.Solve_Euler(), 0.0);
 	}
-	double Expect_price = sum / times;
-	double optPrice_T, optPrice_0;
-	if (optType == 'C')
-		optPrice_T = Expect_price - K;
-	else
-		optPrice_T = K - Expect_price;
-	optPrice_0 = optPrice_T * exp(-s.time_spread() * r);
+	double optPrice_T = sum / times;
+	double optPrice_0 = optPrice_T * exp(-s.time_spread() * r);
 	return optPrice_0;
 }
 istream& MC::read(istream& is) {

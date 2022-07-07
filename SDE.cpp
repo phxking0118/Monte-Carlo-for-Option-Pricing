@@ -19,7 +19,7 @@ double SDE::Solve_Euler() {
 	}
 	double interval = T / step;
 	double mean = 0;
-	double std = interval;
+	double std = sqrt(interval);
 	boost::lagged_fibonacci607 rng;
 	rng.seed(static_cast<boost::uint32_t> (std::time(0)));
 	boost::normal_distribution<> myNormal(mean, std);
